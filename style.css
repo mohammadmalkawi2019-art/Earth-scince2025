@@ -1,0 +1,21 @@
+body{font-family:system-ui,Arial;background:#f8fbff;color:#0f172a;margin:0;padding:18px}
+.container{max-width:900px;margin:14px auto;background:#fff;padding:18px;border-radius:10px;box-shadow:0 8px 24px rgba(12,74,110,0.06)}
+h1{margin:0 0 8px;font-size:22px}
+.lead{color:#334155;margin-bottom:12px}
+label{display:block;margin-top:10px;color:#334155}
+input[type=text],select{width:100%;padding:10px;border:1px solid #e6eef8;border-radius:8px;margin-top:6px}
+.actions{margin-top:14px;display:flex;gap:10px;align-items:center}
+.btn-primary{background:#0ea5e9;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+.btn-muted{background:#eef2ff;color:#0f172a;border:1px solid #e6eef8;padding:8px 12px;border-radius:8px;cursor:pointer}
+.note{color:#64748b;margin-top:10px}
+.small{color:#475569}
+.hidden{display:none}
+.question{margin-top:12px;padding:12px;border-radius:8px;background:#fbfeff;border:1px solid #eef6fb}
+.options label{display:block;padding:8px;border-radius:6px;margin:6px 0;border:1px solid transparent;cursor:pointer}
+.options input{margin-left:8px}
+.navs{display:flex;gap:8px;margin-top:10px}
+.result-row{padding:6px 0;border-top:1px solid #f1f7fb}
+.review{padding:8px;border-top:1px solid #eef6fb;margin-top:6px}
+.good{color:#059669;font-weight:700}
+.bad{color:#dc2626;font-weight:700}
+`

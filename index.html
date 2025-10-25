@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نظام الاختبار الإلكتروني</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>نظام الاختبار الإلكتروني</h1>
+    <p class="lead">أدخل اسمك، أدخل رمز الدخول، ثم اختر الوحدة.</p>
+    <label>الاسم</label>
+    <input id="studentName" type="text" placeholder="اكتب اسمك هنا">
+    <label>رمز الدخول</label>
+    <input id="accessCode" type="text" placeholder="أدخل رمز الدخول">
+    <label>اختر الوحدة</label>
+    <select id="unitSelect"></select>
+    <div class="actions">
+      <button id="startBtn" class="btn-primary">ابدأ الامتحان</button>
+      <button id="adminBtn" class="btn-muted">عرض النتائج المحلية</button>
+    </div>
+    <p class="note">الرمز الموحد: <strong>Earth2025</strong></p>
+    <div id="localResults" class="hidden">
+      <h3>النتائج المحلية (على هذا الجهاز)</h3>
+      <div id="resultsList"></div>
+      <button id="clearLocal" class="btn-muted">حذف النتائج المحلية</button>
+    </div>
+  </div>
+<script src="script.js"></script>
+<script>
+// index page logic
+const ACCESS_CODE = "Earth2025";
+const unitSelect = document.getElementById('unitSelect');
+const studentName = document.getElementById('studentName');
+const accessCode = document.getElementById('accessCode');
+const startBtn = document.getElementById('startBtn');
+const adminBtn = document.getElementById('adminBtn');
+const localResults = document.getElementById('localResults');
+const resultsList = document.getElementById('resultsList');
+const clearLocal = document.getElementById('clearLocal');
+
+async function loadUnits(){
+  try{
+    const r = await fetch('exams/list.json');
+    const data = await r.json();
+    data.exams.forEach(ex => {
+      const opt = document.createElement('option');
+      opt.value = ex.id;
+      opt.textContent = ex.title;
+      unitSelect.appendChild(opt);
+    });
+  }catch(e){
+    unitSelect.innerHTML = '<option value="unit1">الوحدة الأولى</option>';
+  }
+}
+loadUnits();
+
+startBtn.addEventListener('click', ()=>{
+  const name = studentName.value.trim();
+  const code = accessCode.value.trim();
+  const unit = unitSelect.value;
+  if(!name){ alert('ادخل اسمك أولاً'); return; }
+  if(code !== ACCESS_CODE){ alert('رمز الدخول غير صحيح'); return; }
+  // go to exam page with params
+  const url = `exam.html?name=${encodeURIComponent(name)}&unit=${encodeURIComponent(unit)}`;
+  window.location.href = url;
+});
+
+adminBtn.addEventListener('click', ()=>{
+  localResults.classList.toggle('hidden');
+  renderLocalResults();
+});
+
+function renderLocalResults(){
+  const arr = JSON.parse(localStorage.getItem('exam_results')||'[]');
+  if(arr.length===0){ resultsList.innerHTML = '<div class="small">لا توجد نتائج محلية بعد.</div>'; return; }
+  resultsList.innerHTML = '';
+  arr.forEach(r=>{
+    const d = document.createElement('div');
+    d.className = 'result-row';
+    d.innerHTML = `<strong>${r.name}</strong> — ${r.unit} — ${r.score}% — ${new Date(r.date).toLocaleString()}`;
+    resultsList.appendChild(d);
+  });
+}
+clearLocal.addEventListener('click', ()=>{
+  if(confirm('حذف جميع النتائج المحلية؟')){ localStorage.removeItem('exam_results'); renderLocalResults(); }
+});
+</script>
+</body>
+</html>
