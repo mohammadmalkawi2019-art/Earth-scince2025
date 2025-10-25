@@ -2,10 +2,15 @@
 <div class="container">
   <h1>ورقة عمل الوحدة الثانية: التراكيب الجيولوجية</h1>
   <label>الاسم</label><input id="studentName" type="text" placeholder="اكتب اسمك">
-  <label>رمز الدخول</label><input id="code" type="text" placeholder="Enter access code">
-  <label>اختر الوحدة</label><select id="unit"><option value="unit2">الوحدة الثانية</option></select>
+  <label>رمز الدخول</label><input id="code" type="text" placeholder="أدخل رمز الدخول">
   <div class="actions"><button id="start">ابدأ الامتحان</button></div>
   <div class="footer">إعداد المعلم: محمد ملكاوي</div>
 </div>
-<script>document.getElementById('start').addEventListener('click',function(){var name=document.getElementById('studentName').value.trim();var code=document.getElementById('code').value.trim();if(!name){alert('ادخل اسمك');return;}if(code!=='Earth2025'){alert('رمز الدخول خاطئ');return;}location.href='exam.html?name='+encodeURIComponent(name)+'&unit=unit2';});</script>
+<script>
+document.getElementById('start').addEventListener('click', function(){
+  var name = document.getElementById('studentName').value.trim(); var code = document.getElementById('code').value.trim();
+  if(!name){ alert('ادخل اسمك'); return; } if(code !== 'Earth2025'){ alert('رمز الدخول خاطئ'); return; }
+  location.href = 'exam.html?name=' + encodeURIComponent(name) + '&unit=unit2';
+});
+</script>
 </body></html>

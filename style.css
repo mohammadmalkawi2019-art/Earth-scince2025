@@ -7,4 +7,3 @@ input,select{width:100%;padding:8px;margin-top:6px;border:1px solid #ddd;border-
 .nav{margin-top:12px;display:flex;gap:8px}
 .footer{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;font-weight:700}
 .small{color:#333;margin-bottom:6px}
-img.qimg{max-width:100%;height:auto;border:1px solid #eee;margin-top:8px}
