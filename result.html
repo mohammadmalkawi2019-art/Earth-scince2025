@@ -1,49 +1,9 @@
-<!doctype html>
-<html lang="ar">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>النتيجة</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h1>النتيجة</h1>
-    <div id="summary"></div>
-    <div id="details"></div>
-    <div class="actions">
-      <button id="home" class="btn-muted">العودة للرئيسية</button>
-    </div>
-  </div>
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>النتيجة</title><link rel="stylesheet" href="style.css"></head><body>
+<div class="container">
+  <h1>النتيجة</h1>
+  <div id="summary"></div>
+  <div id="details"></div>
+  <div class="footer">إعداد المعلم: محمد ملكاوي</div>
+</div>
 <script src="script.js"></script>
-<script>
-const params = new URLSearchParams(location.search);
-const data = params.get('data');
-let result = null;
-if(data){
-  try{ result = JSON.parse(decodeURIComponent(data)); }catch(e){ result=null; }
-}
-if(!result){
-  // try last local
-  const arr = JSON.parse(localStorage.getItem('exam_results')||'[]');
-  if(arr.length>0) result = arr[0];
-}
-if(!result){ document.getElementById('summary').textContent = 'لا توجد نتيجة لعرضها.'; }
-else{
-  document.getElementById('summary').innerHTML = `<p>مرحبًا <strong>${result.name}</strong> — نتيجتك: <strong>${result.score}%</strong> (${result.correct} من ${result.total})</p>`;
-  const dbox = document.getElementById('details');
-  dbox.innerHTML = '<h3>مراجعة الأسئلة</h3>';
-  result.details.forEach((q,i)=>{
-    const div = document.createElement('div');
-    div.className = 'review';
-    div.innerHTML = `<div class="qline"><strong>س${i+1}:</strong> ${q.question}</div>
-    <div>إجابتك: ${q.given===null? 'لم تُجب' : q.options[q.given]}</div>
-    <div>الإجابة الصحيحة: ${q.options[q.correctIndex]}</div>
-    <div class="${q.ok? 'good' : 'bad'}">${q.ok? 'صحيح' : 'خاطئ'}</div>`;
-    dbox.appendChild(div);
-  });
-}
-document.getElementById('home').addEventListener('click', ()=> location.href='index.html');
-</script>
-</body>
-</html>
+</body></html>

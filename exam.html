@@ -1,88 +1,11 @@
-<!doctype html>
-<html lang="ar">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>الامتحان</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h1 id="examTitle">الامتحان</h1>
-    <div id="studentBox" class="small"></div>
-    <div id="progress" class="small"></div>
-    <div id="questionArea" class="question"></div>
-    <div class="navs">
-      <button id="prev" class="btn-muted">السابق</button>
-      <button id="next" class="btn-muted">التالي</button>
-    </div>
-    <div class="actions">
-      <button id="finish" class="btn-primary">إنهاء الامتحان</button>
-    </div>
-  </div>
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الامتحان</title><link rel="stylesheet" href="style.css"></head><body>
+<div class="container">
+  <h1 id="title">ورقة عمل الوحدة الثانية</h1>
+  <div id="progress" class="small">السؤال 0 من 0</div>
+  <div id="student" class="small"></div>
+  <div id="qarea"></div>
+  <div class="nav"><button id="prev">السابق</button><button id="next">التالي</button><button id="finish">إنهاء الامتحان</button></div>
+  <div class="footer">إعداد المعلم: محمد ملكاوي</div>
+</div>
 <script src="script.js"></script>
-<script>
-// exam page logic
-const params = new URLSearchParams(location.search);
-const studentName = params.get('name') || 'طالب غير معروف';
-const unit = params.get('unit') || 'unit1';
-document.getElementById('studentBox').textContent = `الاسم: ${studentName}`;
-let bank = [];
-let selected = [];
-let answers = {};
-let index = 0;
-
-async function loadBank(){
-  try{
-    const r = await fetch(`exams/${unit}.json`);
-    bank = await r.json();
-    // choose up to 40 random
-    const shuffled = bank.slice().sort(()=>Math.random()-0.5);
-    selected = shuffled.slice(0, Math.min(40, shuffled.length));
-    renderQuestion();
-    updateProgress();
-    document.getElementById('examTitle').textContent = `الامتحان — ${unit}`;
-  }catch(e){
-    alert('خطأ في تحميل الأسئلة');
-  }
-}
-function renderQuestion(){
-  const q = selected[index];
-  const area = document.getElementById('questionArea');
-  area.innerHTML = `<div class="qtext"><strong>السؤال ${index+1}:</strong> ${q.question}</div>`;
-  const opts = document.createElement('div');
-  opts.className = 'options';
-  q.options.forEach((o,i)=>{
-    const id = `opt_${q.id}_${i}`;
-    const label = document.createElement('label');
-    label.innerHTML = `<input type="radio" name="q${q.id}" value="${i}" ${answers[q.id]===i?'checked':''}/> ${o}`;
-    label.addEventListener('click', ()=>{ answers[q.id]=i; });
-    opts.appendChild(label);
-  });
-  area.appendChild(opts);
-}
-function updateProgress(){ document.getElementById('progress').textContent = `السؤال ${index+1} من ${selected.length}`; }
-
-document.getElementById('prev').addEventListener('click', ()=>{ if(index>0){ index--; renderQuestion(); updateProgress(); } });
-document.getElementById('next').addEventListener('click', ()=>{ if(index<selected.length-1){ index++; renderQuestion(); updateProgress(); } });
-
-document.getElementById('finish').addEventListener('click', ()=>{
-  if(!confirm('هل أنت متأكد من إنهاء الامتحان؟ لا يمكنك التعديل بعد الإنهاء.')) return;
-  // grade
-  let correct=0;
-  const details = selected.map(q=>{ const given = (answers[q.id]===undefined)?null:answers[q.id]; const ok = (given===q.answer); if(ok) correct++; return {id:q.id, question:q.question, given, correctIndex:q.answer, options:q.options, ok}; });
-  const score = Math.round((correct/selected.length)*100);
-  const result = { name: studentName, unit, score, correct, total:selected.length, date:new Date().toISOString(), details };
-  // save local
-  const arr = JSON.parse(localStorage.getItem('exam_results')||'[]');
-  arr.unshift(result);
-  localStorage.setItem('exam_results', JSON.stringify(arr));
-  // go to result page
-  const blob = encodeURIComponent(JSON.stringify(result));
-  location.href = `result.html?data=${blob}`;
-});
-
-loadBank();
-</script>
-</body>
-</html>
+</body></html>
